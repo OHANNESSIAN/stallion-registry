@@ -1,1 +1,698 @@
-<div style="display:grid;place-items:center;height:100vh;font-family:Arial,sans-serif;text-align:center"><div><div style="color:#d60f26;font-weight:900;font-size:64px;line-height:1">STALLION</div><div style="border-top:4px solid #d60f26;margin:10px auto;width:80%"></div><div style="color:#0b5d2a;font-weight:700;font-size:28px;letter-spacing:6px">REGISTRY</div></div></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STALLION REGISTRY — Worldwide Thoroughbred Stallion Portal</title>
+  <style>
+    :root {
+      --red: #d60f26;
+      --red-dark: #a80a1c;
+      --green: #0b5d2a;
+      --green-light: #e9f5ee;
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --text: #14171a;
+      --muted: #5c6670;
+      --border: #e1e5ea;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* Header & Hamburger */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+    }
+
+    .brand-link {
+      text-decoration: none;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .brand-top {
+      color: var(--red);
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-rule {
+      width: 100%;
+      border-top: 2px solid var(--red);
+      margin: 3px 0;
+    }
+
+    .brand-bottom {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: 3px;
+    }
+
+    .hamburger {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    /* Slide-out Drawer & Backdrop */
+    .backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 190;
+    }
+
+    .backdrop.open {
+      display: block;
+    }
+
+    nav.drawer {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 280px;
+      max-width: 85vw;
+      height: 100vh;
+      background: var(--surface);
+      z-index: 200;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
+      transition: right 0.25s ease;
+    }
+
+    nav.drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .close-btn {
+      border: none;
+      background: transparent;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--text);
+      padding: 4px 8px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      background: var(--bg);
+    }
+
+    .nav-btn.active {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    /* Main Layout */
+    main {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* Hero Logo Block */
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 48px 24px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .hero-logo {
+      display: inline-block;
+      margin-bottom: 18px;
+    }
+
+    .hero-stallion {
+      color: var(--red);
+      font-weight: 900;
+      font-size: clamp(42px, 10vw, 68px);
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+
+    .hero-rule {
+      border-top: 4px solid var(--red);
+      width: 82%;
+      margin: 10px auto;
+    }
+
+    .hero-registry {
+      color: var(--green);
+      font-weight: 700;
+      font-size: clamp(18px, 4.5vw, 28px);
+      letter-spacing: 6px;
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto 24px;
+      font-size: 15px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 11px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--red-dark);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--green);
+      border-color: var(--green);
+    }
+
+    .btn-secondary:hover {
+      background: var(--green-light);
+    }
+
+    /* Cards, Grids, Tables */
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .input, .select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .toolbar .input {
+      flex: 1 1 220px;
+    }
+
+    .toolbar .select {
+      flex: 0 1 180px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--green-light);
+      color: var(--green);
+      white-space: nowrap;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .stat-line {
+      font-size: 13px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--bg);
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .form-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .notice {
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: var(--green-light);
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 600;
+      display: none;
+    }
+
+    .notice.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand-link" onclick="navigate('home')">
+      <span class="brand-top">STALLION</span>
+      <span class="brand-rule"></span>
+      <span class="brand-bottom">REGISTRY</span>
+    </a>
+
+    <button class="hamburger" id="menuBtn" aria-label="Open menu" onclick="toggleMenu(true)">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <nav class="drawer" id="drawer" aria-label="Portal Navigation">
+    <div class="drawer-header">
+      <span>PORTAL MENU</span>
+      <button class="close-btn" aria-label="Close menu" onclick="toggleMenu(false)">&times;</button>
+    </div>
+    <button class="nav-btn active" data-page="home" onclick="navigate('home')">Home</button>
+    <button class="nav-btn" data-page="directory" onclick="navigate('directory')">Stallion Directory</button>
+    <button class="nav-btn" data-page="leaderboard" onclick="navigate('leaderboard')">Leaderboard</button>
+    <button class="nav-btn" data-page="farms" onclick="navigate('farms')">Stud Farms</button>
+    <button class="nav-btn" data-page="submit" onclick="navigate('submit')">Submit Listing &amp; About</button>
+  </nav>
+
+  <main>
+    <!-- HOME -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <div class="hero-logo">
+          <div class="hero-stallion">STALLION</div>
+          <div class="hero-rule"></div>
+          <div class="hero-registry">REGISTRY</div>
+        </div>
+        <p class="hero-sub">
+          Global Thoroughbred stallion directory, pedigree &amp; sire performance leaderboard, and stud farm index.
+        </p>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="navigate('directory')">Browse Directory</button>
+          <button class="btn btn-secondary" onclick="navigate('leaderboard')">View Leaderboard</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-top">
+            <span class="card-title">Stallion Directory</span>
+            <span class="badge">Profiles</span>
+          </div>
+          <p class="meta">Search sires by country, stud fee tier, and sire line.</p>
+          <button class="btn btn-secondary" onclick="navigate('directory')">Open Directory</button>
+        </div>
+        <div class="card">
+          <div class="card-top">
+            <span class="card-title">Sire Leaderboard</span>
+            <span class="badge">Rankings</span>
+          </div>
+          <p class="meta">Track stakes winners, runners, and progeny performance standings.</p>
+          <button class="btn btn-secondary" onclick="navigate('leaderboard')">Open Leaderboard</button>
+        </div>
+        <div class="card">
+          <div class="card-top">
+            <span class="card-title">Stud Farms</span>
+            <span class="badge">Locations</span>
+          </div>
+          <p class="meta">Explore leading breeding operations across major racing jurisdictions.</p>
+          <button class="btn btn-secondary" onclick="navigate('farms')">Open Stud Farms</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIRECTORY -->
+    <section id="page-directory" class="page">
+      <h1 class="section-title">Stallion Directory</h1>
+      <p class="section-sub">Filter active stallions by name, sire line, or region.</p>
+
+      <div class="toolbar">
+        <input id="searchInput" class="input" type="text" placeholder="Search stallion, sire, or dam..." oninput="renderDirectory()" />
+        <select id="regionFilter" class="select" onchange="renderDirectory()">
+          <option value="ALL">All Regions</option>
+          <option value="UK / Ireland">UK / Ireland</option>
+          <option value="North America">North America</option>
+          <option value="Continental Europe">Continental Europe</option>
+          <option value="Australia">Australia</option>
+        </select>
+      </div>
+
+      <div id="directoryGrid" class="grid"></div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section id="page-leaderboard" class="page">
+      <h1 class="section-title">Sire Leaderboard</h1>
+      <p class="section-sub">Sample standings structure — connect live CSV/API data as records expand.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Stallion</th>
+              <th>Region</th>
+              <th>Stakes Winners</th>
+              <th>Index Score</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STUD FARMS -->
+    <section id="page-farms" class="page">
+      <h1 class="section-title">Stud Farms</h1>
+      <p class="section-sub">Featured breeding hubs and registry partners.</p>
+      <div id="farmsGrid" class="grid"></div>
+    </section>
+
+    <!-- SUBMIT & ABOUT -->
+    <section id="page-submit" class="page">
+      <h1 class="section-title">Submit a Stallion &amp; Registry Info</h1>
+      <p class="section-sub">Queue a new stallion record or inquiry for StallionRegistry.com.</p>
+
+      <form class="form-box" onsubmit="handleSubmit(event)">
+        <label>
+          Stallion Name
+          <input class="input" type="text" id="stallionName" required placeholder="e.g., Sample Sire" />
+        </label>
+        <label>
+          Sire / Dam Line
+          <input class="input" type="text" id="pedigreeLine" required placeholder="e.g., By Sire Name out of Dam Name" />
+        </label>
+        <label>
+          Region / Country
+          <select class="select" id="stallionRegion">
+            <option value="UK / Ireland">UK / Ireland</option>
+            <option value="North America">North America</option>
+            <option value="Continental Europe">Continental Europe</option>
+            <option value="Australia">Australia</option>
+          </select>
+        </label>
+        <label>
+          Notes / Stud Details
+          <textarea rows="3" id="stallionNotes" placeholder="Standing location, fee tier, racing highlights..."></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary">Add to Session Preview</button>
+        <div id="submitNotice" class="notice"></div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const stallions = [
+      { name: "Dubawi", region: "UK / Ireland", line: "Dubai Millennium — Zomaradah", stakes: 275, score: 99.4 },
+      { name: "Frankel", region: "UK / Ireland", line: "Galileo — Kind", stakes: 158, score: 98.8 },
+      { name: "Into Mischief", region: "North America", line: "Harlan's Holiday — Leslie's Lady", stakes: 170, score: 98.2 },
+      { name: "Gun Runner", region: "North America", line: "Candy Ride — Quiet Giant", stakes: 36, score: 96.5 },
+      { name: "Siyouni", region: "Continental Europe", line: "Pivotal — Sichilla", stakes: 82, score: 95.1 },
+      { name: "I Am Invincible", region: "Australia", line: "Invincible Spirit — Cannarelle", stakes: 112, score: 96.0 }
+    ];
+
+    const farms = [
+      { name: "Dalham Hall Stud", location: "Newmarket, UK", focus: "Flat Racing Bloodstock", status: "Featured" },
+      { name: "Banstead Manor Stud", location: "Cheveley, UK", focus: "Classic & Group Sires", status: "Featured" },
+      { name: "Spendthrift Farm", location: "Lexington, KY", focus: "Commercial Roster", status: "Featured" },
+      { name: "Haras de Bonneval", location: "Le Pin-au-Haras, France", focus: "European Turf Sires", status: "Featured" }
+    ];
+
+    function toggleMenu(open) {
+      const drawer = document.getElementById("drawer");
+      const backdrop = document.getElementById("backdrop");
+      if (open) {
+        drawer.classList.add("open");
+        backdrop.classList.add("open");
+      } else {
+        drawer.classList.remove("open");
+        backdrop.classList.remove("open");
+      }
+    }
+
+    function navigate(pageId) {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      const target = document.getElementById("page-" + pageId);
+      if (target) target.classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.page === pageId);
+      });
+
+      toggleMenu(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderDirectory() {
+      const q = (document.getElementById("searchInput").value || "").toLowerCase().trim();
+      const region = document.getElementById("regionFilter").value;
+      const grid = document.getElementById("directoryGrid");
+
+      const filtered = stallions.filter(s => {
+        const matchesRegion = region === "ALL" || s.region === region;
+        const matchesText = !q || s.name.toLowerCase().includes(q) || s.line.toLowerCase().includes(q) || s.region.toLowerCase().includes(q);
+        return matchesRegion && matchesText;
+      });
+
+      grid.innerHTML = filtered.map(s => `
+        <div class="card">
+          <div class="card-top">
+            <span class="card-title">${s.name}</span>
+            <span class="badge">${s.region}</span>
+          </div>
+          <p class="meta">${s.line}</p>
+          <div class="stat-line">
+            <span>Stakes Winners: <strong>${s.stakes}</strong></span>
+            <span>Index: <strong>${s.score}</strong></span>
+          </div>
+        </div>
+      `).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
+    }
+
+    function renderLeaderboard() {
+      const sorted = [...stallions].sort((a, b) => b.score - a.score);
+      const tbody = document.getElementById("leaderboardBody");
+      tbody.innerHTML = sorted.map((s, idx) => `
+        <tr>
+          <td><strong>#${idx + 1}</strong></td>
+          <td><strong>${s.name}</strong></td>
+          <td>${s.region}</td>
+          <td>${s.stakes}</td>
+          <td>${s.score.toFixed(1)}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderFarms() {
+      const grid = document.getElementById("farmsGrid");
+      grid.innerHTML = farms.map(f => `
+        <div class="card">
+          <div class="card-top">
+            <span class="card-title">${f.name}</span>
+            <span class="badge">${f.status}</span>
+          </div>
+          <p class="meta">${f.location}</p>
+          <div class="stat-line">
+            <span>Focus: <strong>${f.focus}</strong></span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("stallionName").value.trim();
+      const line = document.getElementById("pedigreeLine").value.trim();
+      const region = document.getElementById("stallionRegion").value;
+      if (!name || !line) return;
+
+      stallions.unshift({ name, region, line, stakes: 0, score: 90.0 });
+      renderDirectory();
+      renderLeaderboard();
+
+      const notice = document.getElementById("submitNotice");
+      notice.textContent = `Added "${name}" to the live session directory and leaderboard.`;
+      notice.classList.add("show");
+      e.target.reset();
+    }
+
+    renderDirectory();
+    renderLeaderboard();
+    renderFarms();
+  </script>
+</body>
+</html>
