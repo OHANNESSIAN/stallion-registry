@@ -1,1 +1,1 @@
-# stallion-registry
+# Stallion Registry — Thoroughbred Stud & Stallion Directory
