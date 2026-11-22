@@ -30,7 +30,6 @@
       line-height: 1.5;
     }
 
-    /* Header & Hamburger */
     header {
       position: sticky;
       top: 0;
@@ -91,10 +90,8 @@
       width: 20px;
       height: 2px;
       background: var(--text);
-      transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
-    /* Slide-out Drawer & Backdrop */
     .backdrop {
       display: none;
       position: fixed;
@@ -172,7 +169,6 @@
       color: var(--green);
     }
 
-    /* Main Layout */
     main {
       max-width: 1060px;
       margin: 0 auto;
@@ -187,7 +183,6 @@
       display: block;
     }
 
-    /* Hero Logo Block */
     .hero {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -225,7 +220,7 @@
 
     .hero-sub {
       color: var(--muted);
-      max-width: 580px;
+      max-width: 600px;
       margin: 0 auto 24px;
       font-size: 15px;
     }
@@ -265,7 +260,6 @@
       background: var(--green-light);
     }
 
-    /* Cards, Grids, Tables */
     .section-title {
       font-size: 22px;
       font-weight: 800;
@@ -301,7 +295,7 @@
     }
 
     .toolbar .select {
-      flex: 0 1 180px;
+      flex: 0 1 210px;
     }
 
     .grid {
@@ -320,7 +314,7 @@
     .card-top {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: flex-start;
       gap: 8px;
       margin-bottom: 6px;
     }
@@ -352,6 +346,8 @@
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .table-wrap {
@@ -459,11 +455,11 @@
           <div class="hero-registry">REGISTRY</div>
         </div>
         <p class="hero-sub">
-          Global Thoroughbred stallion directory, pedigree &amp; sire performance leaderboard, and stud farm index.
+          Thoroughbred stallion directory, sire standings, and stud farms across Ireland, England, the United States (Kentucky, Florida &amp; more), and Canada.
         </p>
         <div class="btn-row">
           <button class="btn btn-primary" onclick="navigate('directory')">Browse Directory</button>
-          <button class="btn btn-secondary" onclick="navigate('leaderboard')">View Leaderboard</button>
+          <button class="btn btn-secondary" onclick="navigate('farms')">Explore Stud Farms</button>
         </div>
       </div>
 
@@ -471,25 +467,25 @@
         <div class="card">
           <div class="card-top">
             <span class="card-title">Stallion Directory</span>
-            <span class="badge">Profiles</span>
+            <span class="badge">Sires</span>
           </div>
-          <p class="meta">Search sires by country, stud fee tier, and sire line.</p>
+          <p class="meta">Search sires standing in Kentucky, Florida, Ireland, England, and Canada.</p>
           <button class="btn btn-secondary" onclick="navigate('directory')">Open Directory</button>
         </div>
         <div class="card">
           <div class="card-top">
             <span class="card-title">Sire Leaderboard</span>
-            <span class="badge">Rankings</span>
+            <span class="badge">2026 Standings</span>
           </div>
-          <p class="meta">Track stakes winners, runners, and progeny performance standings.</p>
+          <p class="meta">Compare black-type winners, progeny earnings, and standing farms.</p>
           <button class="btn btn-secondary" onclick="navigate('leaderboard')">Open Leaderboard</button>
         </div>
         <div class="card">
           <div class="card-top">
             <span class="card-title">Stud Farms</span>
-            <span class="badge">Locations</span>
+            <span class="badge">IRE / GB / US / CAN</span>
           </div>
-          <p class="meta">Explore leading breeding operations across major racing jurisdictions.</p>
+          <p class="meta">Browse breeding farms across Ireland, England, Kentucky, Florida, and Canada.</p>
           <button class="btn btn-secondary" onclick="navigate('farms')">Open Stud Farms</button>
         </div>
       </div>
@@ -498,16 +494,17 @@
     <!-- DIRECTORY -->
     <section id="page-directory" class="page">
       <h1 class="section-title">Stallion Directory</h1>
-      <p class="section-sub">Filter active stallions by name, sire line, or region.</p>
+      <p class="section-sub">Filter stallions by name, sire line, farm, or region.</p>
 
       <div class="toolbar">
-        <input id="searchInput" class="input" type="text" placeholder="Search stallion, sire, or dam..." oninput="renderDirectory()" />
+        <input id="searchInput" class="input" type="text" placeholder="Search stallion, sire, or farm..." oninput="renderDirectory()" />
         <select id="regionFilter" class="select" onchange="renderDirectory()">
           <option value="ALL">All Regions</option>
-          <option value="UK / Ireland">UK / Ireland</option>
-          <option value="North America">North America</option>
-          <option value="Continental Europe">Continental Europe</option>
-          <option value="Australia">Australia</option>
+          <option value="United States — Kentucky">United States — Kentucky</option>
+          <option value="United States — Florida">United States — Florida</option>
+          <option value="Ireland">Ireland</option>
+          <option value="England">England</option>
+          <option value="Canada">Canada</option>
         </select>
       </div>
 
@@ -517,7 +514,7 @@
     <!-- LEADERBOARD -->
     <section id="page-leaderboard" class="page">
       <h1 class="section-title">Sire Leaderboard</h1>
-      <p class="section-sub">Sample standings structure — connect live CSV/API data as records expand.</p>
+      <p class="section-sub">Ranked by 2026 progeny earnings and black-type / stakes highlights.</p>
 
       <div class="table-wrap">
         <table>
@@ -526,8 +523,8 @@
               <th>Rank</th>
               <th>Stallion</th>
               <th>Region</th>
-              <th>Stakes Winners</th>
-              <th>Index Score</th>
+              <th>Farm</th>
+              <th>2026 Earnings</th>
             </tr>
           </thead>
           <tbody id="leaderboardBody"></tbody>
@@ -538,14 +535,27 @@
     <!-- STUD FARMS -->
     <section id="page-farms" class="page">
       <h1 class="section-title">Stud Farms</h1>
-      <p class="section-sub">Featured breeding hubs and registry partners.</p>
+      <p class="section-sub">Thoroughbred breeding operations across Ireland, England, the United States, and Canada.</p>
+
+      <div class="toolbar">
+        <input id="farmSearchInput" class="input" type="text" placeholder="Search stud farm or location..." oninput="renderFarms()" />
+        <select id="farmRegionFilter" class="select" onchange="renderFarms()">
+          <option value="ALL">All Regions</option>
+          <option value="United States — Kentucky">United States — Kentucky</option>
+          <option value="United States — Florida">United States — Florida</option>
+          <option value="Ireland">Ireland</option>
+          <option value="England">England</option>
+          <option value="Canada">Canada</option>
+        </select>
+      </div>
+
       <div id="farmsGrid" class="grid"></div>
     </section>
 
     <!-- SUBMIT & ABOUT -->
     <section id="page-submit" class="page">
       <h1 class="section-title">Submit a Stallion &amp; Registry Info</h1>
-      <p class="section-sub">Queue a new stallion record or inquiry for StallionRegistry.com.</p>
+      <p class="section-sub">Add a stallion to your live session preview or queue a listing for StallionRegistry.com.</p>
 
       <form class="form-box" onsubmit="handleSubmit(event)">
         <label>
@@ -553,21 +563,22 @@
           <input class="input" type="text" id="stallionName" required placeholder="e.g., Sample Sire" />
         </label>
         <label>
-          Sire / Dam Line
-          <input class="input" type="text" id="pedigreeLine" required placeholder="e.g., By Sire Name out of Dam Name" />
+          Sire / Farm Line
+          <input class="input" type="text" id="pedigreeLine" required placeholder="e.g., By Sire Name — Standing Farm" />
         </label>
         <label>
-          Region / Country
+          Region
           <select class="select" id="stallionRegion">
-            <option value="UK / Ireland">UK / Ireland</option>
-            <option value="North America">North America</option>
-            <option value="Continental Europe">Continental Europe</option>
-            <option value="Australia">Australia</option>
+            <option value="United States — Kentucky">United States — Kentucky</option>
+            <option value="United States — Florida">United States — Florida</option>
+            <option value="Ireland">Ireland</option>
+            <option value="England">England</option>
+            <option value="Canada">Canada</option>
           </select>
         </label>
         <label>
-          Notes / Stud Details
-          <textarea rows="3" id="stallionNotes" placeholder="Standing location, fee tier, racing highlights..."></textarea>
+          Notes / Fee or Highlights
+          <textarea rows="3" id="stallionNotes" placeholder="Stud fee, racing highlights, or breeding notes..."></textarea>
         </label>
         <button type="submit" class="btn btn-primary">Add to Session Preview</button>
         <div id="submitNotice" class="notice"></div>
@@ -577,19 +588,76 @@
 
   <script>
     const stallions = [
-      { name: "Dubawi", region: "UK / Ireland", line: "Dubai Millennium — Zomaradah", stakes: 275, score: 99.4 },
-      { name: "Frankel", region: "UK / Ireland", line: "Galileo — Kind", stakes: 158, score: 98.8 },
-      { name: "Into Mischief", region: "North America", line: "Harlan's Holiday — Leslie's Lady", stakes: 170, score: 98.2 },
-      { name: "Gun Runner", region: "North America", line: "Candy Ride — Quiet Giant", stakes: 36, score: 96.5 },
-      { name: "Siyouni", region: "Continental Europe", line: "Pivotal — Sichilla", stakes: 82, score: 95.1 },
-      { name: "I Am Invincible", region: "Australia", line: "Invincible Spirit — Cannarelle", stakes: 112, score: 96.0 }
+      { name: "Into Mischief", region: "United States — Kentucky", line: "By Harlan's Holiday — Spendthrift Farm, KY", farm: "Spendthrift Farm", bt: "26 BT winners (2026)", earningsVal: 31010822, earningsText: "$31,010,822" },
+      { name: "Not This Time", region: "United States — Kentucky", line: "By Giant's Causeway — Taylor Made Stallions, KY", farm: "Taylor Made Stallions", bt: "23 BT winners (2026)", earningsVal: 30848553, earningsText: "$30,848,553" },
+      { name: "Gun Runner", region: "United States — Kentucky", line: "By Candy Ride (ARG) — Three Chimneys Farm, KY", farm: "Three Chimneys Farm", bt: "18 BT winners (2026)", earningsVal: 20667916, earningsText: "$20,667,916" },
+      { name: "Nyquist", region: "United States — Kentucky", line: "By Uncle Mo — Darley, KY", farm: "Darley (KY)", bt: "14 BT winners (2026)", earningsVal: 17348068, earningsText: "$17,348,068" },
+      { name: "Practical Joke", region: "United States — Kentucky", line: "By Into Mischief — Ashford Stud, KY", farm: "Ashford Stud", bt: "10 BT winners (2026)", earningsVal: 15253033, earningsText: "$15,253,033" },
+      { name: "Justify", region: "United States — Kentucky", line: "By Scat Daddy — Ashford Stud, KY", farm: "Ashford Stud", bt: "22 BT winners (2026)", earningsVal: 15166873, earningsText: "$15,166,873" },
+      { name: "Constitution", region: "United States — Kentucky", line: "By Tapit — WinStar Farm, KY", farm: "WinStar Farm", bt: "11 BT winners (2026)", earningsVal: 14734608, earningsText: "$14,734,608" },
+      { name: "Curlin", region: "United States — Kentucky", line: "By Smart Strike — Hill 'n' Dale Farms, KY", farm: "Hill 'n' Dale Farms", bt: "11 BT winners (2026)", earningsVal: 14265847, earningsText: "$14,265,847" },
+      { name: "Liam's Map", region: "United States — Kentucky", line: "By Unbridled's Song — Lane's End, KY", farm: "Lane's End", bt: "9 BT winners (2026)", earningsVal: 13964313, earningsText: "$13,964,313" },
+      { name: "Annapolis", region: "United States — Kentucky", line: "By War Front — Claiborne Farm, KY", farm: "Claiborne Farm", bt: "Claiborne Roster", earningsVal: 9500000, earningsText: "Claiborne Roster" },
+      { name: "Kantharos", region: "United States — Florida", line: "By Lion Heart — Ocala Stud, FL ($8,500 '27 fee)", farm: "Ocala Stud", bt: "$6.1M+ 2026 earnings", earningsVal: 6100000, earningsText: "$6.1M+ (2026)" },
+      { name: "Awesome Slew", region: "United States — Florida", line: "Florida Sire Roster — Ocala Stud, FL", farm: "Ocala Stud", bt: "G2 winner sire", earningsVal: 3200000, earningsText: "FL Sire Roster" },
+      { name: "Win Win Win", region: "United States — Florida", line: "Florida Sire Roster — Ocala Stud, FL", farm: "Ocala Stud", bt: "G1 runner sire", earningsVal: 3100000, earningsText: "FL Sire Roster" },
+      { name: "Auguste Rodin", region: "Ireland", line: "By Deep Impact — Coolmore Stud, IRE", farm: "Coolmore Ireland", bt: "EUR 25,000 fee", earningsVal: 8500000, earningsText: "EUR 25,000 Fee" },
+      { name: "Sea The Stars", region: "Ireland", line: "By Cape Cross — Gilltown Stud (Aga Khan Studs), IRE", farm: "Gilltown Stud", bt: "2027 Roster", earningsVal: 8200000, earningsText: "Gilltown Stud" },
+      { name: "Night of Thunder (IRE)", region: "Ireland", line: "By Dubawi (IRE) — Kildangan Stud, IRE", farm: "Kildangan Stud", bt: "IRE / Darley Roster", earningsVal: 7900000, earningsText: "Kildangan Stud" },
+      { name: "Baaeed", region: "England", line: "By Sea The Stars — Beech House Stud, GB", farm: "Beech House Stud", bt: "GBP 55,000 fee", earningsVal: 8800000, earningsText: "GBP 55,000 Fee" },
+      { name: "Bated Breath", region: "England", line: "By Dansili — Banstead Manor Stud, GB", farm: "Banstead Manor Stud", bt: "GBP 5,000 fee", earningsVal: 4500000, earningsText: "GBP 5,000 Fee" },
+      { name: "Sergei Prokofiev", region: "Canada", line: "Registered Ontario Sire — Ballycroy Bloodstock, ON", farm: "Ballycroy Bloodstock", bt: "Ontario Roster", earningsVal: 2200000, earningsText: "Ontario Roster" },
+      { name: "Shaman Ghost", region: "Canada", line: "Registered Ontario Sire — Adena Springs North, ON", farm: "Adena Springs North", bt: "Ontario Roster", earningsVal: 2100000, earningsText: "Ontario Roster" },
+      { name: "Silent Name (JPN)", region: "Canada", line: "Registered Ontario Sire — Adena Springs North, ON", farm: "Adena Springs North", bt: "Ontario Roster", earningsVal: 2050000, earningsText: "Ontario Roster" }
     ];
 
     const farms = [
-      { name: "Dalham Hall Stud", location: "Newmarket, UK", focus: "Flat Racing Bloodstock", status: "Featured" },
-      { name: "Banstead Manor Stud", location: "Cheveley, UK", focus: "Classic & Group Sires", status: "Featured" },
-      { name: "Spendthrift Farm", location: "Lexington, KY", focus: "Commercial Roster", status: "Featured" },
-      { name: "Haras de Bonneval", location: "Le Pin-au-Haras, France", focus: "European Turf Sires", status: "Featured" }
+      // Kentucky
+      { name: "Spendthrift Farm", location: "Lexington, KY", region: "United States — Kentucky", focus: "Commercial & Classic Sires" },
+      { name: "Taylor Made Farm / Stallions", location: "Nicholasville, KY", region: "United States — Kentucky", focus: "Stallions, Sales & Breeding" },
+      { name: "Three Chimneys Farm", location: "Midway, KY", region: "United States — Kentucky", focus: "Stallion Roster & Bloodstock" },
+      { name: "Ashford Stud (Coolmore)", location: "Versailles, KY", region: "United States — Kentucky", focus: "North American Coolmore Sires" },
+      { name: "WinStar Farm", location: "Versailles, KY", region: "United States — Kentucky", focus: "Stallions & Racing Operation" },
+      { name: "Hill 'n' Dale Farms", location: "Lexington, KY", region: "United States — Kentucky", focus: "Stallions & Broodmare Band" },
+      { name: "Lane's End Farm", location: "Versailles, KY", region: "United States — Kentucky", focus: "Stallions, Breeding & Sales" },
+      { name: "Claiborne Farm", location: "Paris, KY", region: "United States — Kentucky", focus: "Historic Stallion & Breeding Farm" },
+      { name: "Gainesway Farm", location: "Lexington, KY", region: "United States — Kentucky", focus: "Stallions & Breeding" },
+      { name: "Airdrie Stud", location: "Midway, KY", region: "United States — Kentucky", focus: "Stallions & Breeding" },
+      { name: "Darby Dan Farm", location: "Lexington, KY", region: "United States — Kentucky", focus: "Stallions & Breeding" },
+      { name: "Jonabell Farm", location: "Lexington, KY", region: "United States — Kentucky", focus: "Godolphin / Darley Kentucky" },
+      { name: "Mill Ridge Farm", location: "Lexington, KY", region: "United States — Kentucky", focus: "Breeding & Consignment" },
+      { name: "Crestwood Farm", location: "Lexington, KY", region: "United States — Kentucky", focus: "Boarding, Sales & Breeding" },
+
+      // Florida
+      { name: "Ocala Stud", location: "Ocala, FL", region: "United States — Florida", focus: "Florida Stallions, Training & Sales" },
+      { name: "Bridlewood Farm", location: "Ocala, FL", region: "United States — Florida", focus: "Breeding, Foaling & Sales Prep" },
+      { name: "Hidden Brook Farm (Florida)", location: "Williston, FL", region: "United States — Florida", focus: "Breaking, Training & Consignment" },
+
+      // Ireland
+      { name: "Coolmore Ireland", location: "Fethard, Co. Tipperary, Ireland", region: "Ireland", focus: "Classic & Group Stallion Roster" },
+      { name: "Gilltown Stud (Aga Khan Studs)", location: "Kilcullen, Co. Kildare, Ireland", region: "Ireland", focus: "Public Stud & Pre-Training" },
+      { name: "Ballylinch Stud", location: "Thomastown, Co. Kilkenny, Ireland", region: "Ireland", focus: "Stallions, Foaling & Sales" },
+      { name: "Castlemartin Stud", location: "Co. Kildare, Ireland", region: "Ireland", focus: "Sister Breeding Operation" },
+      { name: "Derrinstown Stud", location: "Maynooth, Co. Kildare, Ireland", region: "Ireland", focus: "Stallions & Breeding" },
+      { name: "Irish National Stud", location: "Tully, Co. Kildare, Ireland", region: "Ireland", focus: "Stallions, Breeding & Heritage" },
+      { name: "Tally Ho Stud", location: "Mullingar, Co. Westmeath, Ireland", region: "Ireland", focus: "Commercial & Sprint Sires" },
+
+      // England
+      { name: "Juddmonte Farms", location: "Newmarket, England", region: "England", focus: "Global Breeding & Racing" },
+      { name: "Banstead Manor Stud", location: "Cheveley / Newmarket, England", region: "England", focus: "Juddmonte Stallion & Breeding Hub" },
+      { name: "Beech House Stud", location: "Newmarket, England", region: "England", focus: "Stallion Roster" },
+      { name: "The National Stud", location: "Newmarket, England", region: "England", focus: "Stallions, Breeding & Education" },
+      { name: "Newsells Park Stud", location: "Royston, Hertfordshire, England", region: "England", focus: "Breeding & Sales" },
+      { name: "Overbury Stud", location: "Tewkesbury, Gloucestershire, England", region: "England", focus: "Stallions & Breeding" },
+      { name: "Chapel Stud", location: "England", region: "England", focus: "Stallions & Breeding" },
+
+      // Canada
+      { name: "Colebrook Farms Stallion Station", location: "Uxbridge, ON, Canada", region: "Canada", focus: "Ontario Stallion Station" },
+      { name: "Adena Springs North", location: "Aurora, ON, Canada", region: "Canada", focus: "Ontario Breeding & Stallions" },
+      { name: "Ballycroy Bloodstock", location: "Loretto, ON, Canada", region: "Canada", focus: "Ontario Stallions & Bloodstock" },
+      { name: "T.C. Westmeath Stud Farm", location: "Mulmur, ON, Canada", region: "Canada", focus: "Ontario Breeding & Stallions" },
+      { name: "Tara Horse Farm", location: "Niagara-on-the-Lake, ON, Canada", region: "Canada", focus: "Ontario Breeding & Stallions" },
+      { name: "Highfield Stock Farm", location: "Alberta, Canada", region: "Canada", focus: "Western Canadian Thoroughbreds" }
     ];
 
     function toggleMenu(open) {
@@ -624,7 +692,11 @@
 
       const filtered = stallions.filter(s => {
         const matchesRegion = region === "ALL" || s.region === region;
-        const matchesText = !q || s.name.toLowerCase().includes(q) || s.line.toLowerCase().includes(q) || s.region.toLowerCase().includes(q);
+        const matchesText = !q ||
+          s.name.toLowerCase().includes(q) ||
+          s.line.toLowerCase().includes(q) ||
+          s.farm.toLowerCase().includes(q) ||
+          s.region.toLowerCase().includes(q);
         return matchesRegion && matchesText;
       });
 
@@ -636,41 +708,54 @@
           </div>
           <p class="meta">${s.line}</p>
           <div class="stat-line">
-            <span>Stakes Winners: <strong>${s.stakes}</strong></span>
-            <span>Index: <strong>${s.score}</strong></span>
+            <span><strong>${s.bt}</strong></span>
+            <span>${s.earningsText}</span>
           </div>
         </div>
       `).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
     }
 
     function renderLeaderboard() {
-      const sorted = [...stallions].sort((a, b) => b.score - a.score);
+      const sorted = [...stallions].sort((a, b) => b.earningsVal - a.earningsVal);
       const tbody = document.getElementById("leaderboardBody");
       tbody.innerHTML = sorted.map((s, idx) => `
         <tr>
           <td><strong>#${idx + 1}</strong></td>
           <td><strong>${s.name}</strong></td>
           <td>${s.region}</td>
-          <td>${s.stakes}</td>
-          <td>${s.score.toFixed(1)}</td>
+          <td>${s.farm}</td>
+          <td>${s.earningsText}</td>
         </tr>
       `).join("");
     }
 
     function renderFarms() {
+      const q = (document.getElementById("farmSearchInput").value || "").toLowerCase().trim();
+      const region = document.getElementById("farmRegionFilter").value;
       const grid = document.getElementById("farmsGrid");
-      grid.innerHTML = farms.map(f => `
+
+      const filtered = farms.filter(f => {
+        const matchesRegion = region === "ALL" || f.region === region;
+        const matchesText = !q ||
+          f.name.toLowerCase().includes(q) ||
+          f.location.toLowerCase().includes(q) ||
+          f.focus.toLowerCase().includes(q) ||
+          f.region.toLowerCase().includes(q);
+        return matchesRegion && matchesText;
+      });
+
+      grid.innerHTML = filtered.map(f => `
         <div class="card">
           <div class="card-top">
             <span class="card-title">${f.name}</span>
-            <span class="badge">${f.status}</span>
+            <span class="badge">${f.region}</span>
           </div>
           <p class="meta">${f.location}</p>
           <div class="stat-line">
             <span>Focus: <strong>${f.focus}</strong></span>
           </div>
         </div>
-      `).join("");
+      `).join("") || `<div class="card"><p class="meta">No matching stud farms found.</p></div>`;
     }
 
     function handleSubmit(e) {
@@ -678,9 +763,18 @@
       const name = document.getElementById("stallionName").value.trim();
       const line = document.getElementById("pedigreeLine").value.trim();
       const region = document.getElementById("stallionRegion").value;
+      const notes = document.getElementById("stallionNotes").value.trim();
       if (!name || !line) return;
 
-      stallions.unshift({ name, region, line, stakes: 0, score: 90.0 });
+      stallions.unshift({
+        name,
+        region,
+        line,
+        farm: line.split("—").pop().trim() || "Submitted Farm",
+        bt: notes || "Submitted Listing",
+        earningsVal: 1000000,
+        earningsText: notes || "Pending"
+      });
       renderDirectory();
       renderLeaderboard();
 
