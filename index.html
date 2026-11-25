@@ -844,8 +844,10 @@ h1, h2, h3, .section-title, .hero-stallion {
           </div>
           <p class="meta">${s.line}</p>
           <div class="stat-line">
-            <span><strong>${s.bt}</strong></span>
-            <span>${s.earningsText}</span>
+                      <span>Line: </span>
+                      <span><strong>${s.bt}</strong></span>
+                      <span> · Record: </span>
+<span>${s.earningsText}</span>
           </div>
         </div>
       `).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
