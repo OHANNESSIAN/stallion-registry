@@ -901,20 +901,27 @@ h1, h2, h3, .section-title, .hero-stallion {
         backdrop.classList.remove("open");
       }
     }
+function navigate(pageId) {
+  const normalized = (pageId === "contact" || pageId === "about") ? "submit" : pageId;
+  document.querySelectorAll(".page").forEach(p => {
+    p.classList.remove("active");
+    p.style.display = "none";
+  });
+  const target = document.getElementById("page-" + normalized);
+  if (target) {
+    target.classList.add("active");
+    target.style.display = "block";
+  }
 
-    function navigate(pageId) {
-      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-      const target = document.getElementById("page-" + pageId);
-      if (target) target.classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.page === normalized);
+  });
 
-      document.querySelectorAll(".nav-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.page === pageId);
-      });
-
-      toggleMenu(false);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
+  toggleMenu(false);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    
+    
     function renderDirectory() {
       const q = (document.getElementById("searchInput").value || "").toLowerCase().trim();
       const region = document.getElementById("regionFilter").value;
