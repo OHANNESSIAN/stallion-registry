@@ -653,20 +653,18 @@ h1, h2, h3, .section-title, .hero-stallion {
       <h1 class="section-title">Sire Leaderboard</h1>
       <p class="section-sub">Ranked by 2026 progeny earnings and black-type / stakes highlights.</p>
 
-      <div class="table-wrap" style="overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%;">
-        
-      
-          <table style="min-width: 620px; width: 620px; border-collapse: collapse;">
-
+            <div class="table-wrap">
+        <table style="width: 100%; min-width: 540px; border-collapse: collapse;">
           <thead>
             <tr>
               <th>Rank</th>
               <th>Stallion</th>
               <th>Region</th>
               <th>Farm</th>
-              <th>2026 Earnings</th>
+              <th>2026 Earnings / Status</th>
             </tr>
           </thead>
+          
           <tbody id="leaderboardBody"></tbody>
         </table>
       </div>
@@ -872,19 +870,21 @@ h1, h2, h3, .section-title, .hero-stallion {
       `).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
     }
 
-    function renderLeaderboard() {
-      const sorted = [...stallions].sort((a, b) => b.earningsVal - a.earningsVal);
+        function renderLeaderboard() {
       const tbody = document.getElementById("leaderboardBody");
+      if (!tbody || typeof stallions === "undefined") return;
+      const sorted = [...stallions].sort((a, b) => (Number(b.earningsVal) || 0) - (Number(a.earningsVal) || 0));
       tbody.innerHTML = sorted.map((s, idx) => `
         <tr>
           <td><strong>#${idx + 1}</strong></td>
           <td><strong>${s.name}</strong></td>
           <td>${s.region}</td>
           <td>${s.farm}</td>
-          <td>${s.earningsText}</td>
+          <td>${s.earningsText || "—"}</td>
         </tr>
       `).join("");
     }
+
 
     function renderFarms() {
       const q = (document.getElementById("farmSearchInput").value || "").toLowerCase().trim();
