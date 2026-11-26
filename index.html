@@ -903,8 +903,7 @@ h1, h2, h3, .section-title, .hero-stallion {
       }
     }
 function navigate(pageId) {
-  const normalized = (pageId === "contact" || pageId === "about") ? "submit" : pageId;
-    const normalized = (pageId === "contact" || pageId === "about" || pageId === "submit-listing") ? "submit" : pageId;
+      const normalized = (pageId === "contact" || pageId === "about" || pageId === "submit-listing") ? "submit" : pageId;
   document.querySelectorAll(".page").forEach(p => {
     p.classList.remove("active");
     p.style.display = "none";
@@ -914,15 +913,13 @@ function navigate(pageId) {
     target.classList.add("active");
     target.style.display = "block";
   }
-  
-
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.page === normalized);
   });
-
   toggleMenu(false);
   window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+}
+    
     
     
     function renderDirectory() {
@@ -957,20 +954,20 @@ function navigate(pageId) {
       `).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
     }
 
-        function renderLeaderboard() {
-      const tbody = document.getElementById("leaderboardBody");
-      if (!tbody || typeof stallions === "undefined") return;
-      const sorted = [...stallions].sort((a, b) => (Number(b.earningsVal) || 0) - (Number(a.earningsVal) || 0));
-      tbody.innerHTML = sorted.map((s, idx) => `
-        <tr>
-          <td><strong>#${idx + 1}</strong></td>
-          <td><strong>${s.name}</strong></td>
-          <td>${s.region}</td>
-          <td>${s.farm}</td>
-          <td>${s.earningsText || "—"}</td>
-        </tr>
-      `).join("");
-    }
+          function renderLeaderboard() {
+    const tbody = document.getElementById("leaderboardBody");
+    if (!tbody || typeof stallions === "undefined") return;
+    tbody.innerHTML = stallions.map((s, idx) => `
+      <tr>
+        <td><strong>#${idx + 1}</strong></td>
+        <td><strong>${s.name || ""}</strong></td>
+        <td>${s.region || ""}</td>
+        <td>${s.farm || ""}</td>
+        <td>${s.earningsText || s.bt || "2026 Roster"}</td>
+      </tr>
+    `).join("");
+          }
+    
 
 
     function renderFarms() {
