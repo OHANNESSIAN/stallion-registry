@@ -485,10 +485,9 @@ h1, h2, h3, .section-title, .hero-stallion {
   background: #f9f7f2;
 }
 
-.table-wrap { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
-.table-wrap table { width: 620px; min-width: 620px; border-collapse: collapse; }
-.table-wrap th, .table-wrap td { white-space: nowrap; }
-      
+.table-wrap { display: block; max-width: 100%; overflow-x: hidden; }
+.table-wrap table { width: 100%; min-width: 0; border-collapse: collapse; table-layout: auto; }
+.table-wrap th, .table-wrap td { white-space: normal; font-size: 12px; padding: 8px 6px; word-break: break-word; }
       
       
   </style>
