@@ -1039,14 +1039,17 @@ function srOpen(name) {
     mains[m].style.setProperty("display", "block", "important");
   }
 
-  var rawSections = document.querySelectorAll("main > section, main > div, .page, section[id], div[id^='page-']");
+    var rawSections = document.querySelectorAll("body > section, body > div, main > section, main > div, .page, [data-page]");
   var sections = [];
   for (var i = 0; i < rawSections.length; i++) {
     var s = rawSections[i];
-    if (s.tagName === "HEADER" || s.tagName === "FOOTER" || s.tagName === "NAV") continue;
+    if (!s || s.tagName === "HEADER" || s.tagName === "FOOTER" || s.tagName === "NAV" || s.tagName === "SCRIPT" || s.tagName === "STYLE") continue;
     if (s.id === "drawer" || s.id === "backdrop") continue;
-    sections.push(s);
+    if (s.querySelector && (s.querySelector("h1, h2, h3") || s.classList.contains("page") || s.hasAttribute("data-page") || s.tagName === "SECTION")) {
+      sections.push(s);
+    }
   }
+
 
   var target = null;
   for (var j = 0; j < sections.length; j++) {
