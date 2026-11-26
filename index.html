@@ -530,7 +530,7 @@ h1, h2, h3, .section-title, .hero-stallion {
     <button class="nav-btn" data-page="directory" onclick="navigate('directory')">Stallion Directory</button>
     <button class="nav-btn" data-page="leaderboard" onclick="navigate('leaderboard')">Leaderboard</button>
     <button class="nav-btn" data-page="farms" onclick="navigate('farms')">Stud Farms</button>
-    <button class="nav-btn" data-page="submit" onclick="navigate('submit')">Submit Listing &amp; About</button>
+    <button class="nav-btn" data-page="submit" onclick="navigate('submit')">Submit Listing &amp; About</button><button class="nav-btn" data-page="about" onclick="navigate('about')">About</button>
   </nav>
   <main>
     <!-- HOME -->
@@ -762,7 +762,16 @@ h1, h2, h3, .section-title, .hero-stallion {
               </div>
         
     </section>
-  </main>
+  <section id="page-about" class="page">
+  <h1 class="section-title">About StallionRegistry.com</h1>
+  <p class="section-sub">An independent international Thoroughbred stallion directory.</p>
+  <div class="card">
+    <p class="meta">StallionRegistry.com is an independent directory covering Thoroughbred flat racing stallions, sire standings, and stud farms across Ireland, England, the United States (Kentucky, Florida and more), and Canada.</p>
+    <p class="meta">Our goal is to help broodmare owners, breeders, and bloodstock professionals find sound, proven sires and the farms that stand them, all in one place.</p>
+    <p class="meta">Listings are reviewed before they are published. Always confirm current stud fees and details directly with the stud farm before breeding.</p>
+    <p class="meta">To list a stallion or farm, use the Submit Listing page. For any other questions, email info@stallionregistry.com.</p>
+  </div>
+  </section></main>
   
 <footer style="max-width: 960px; margin: 36px auto 28px; padding: 20px 24px; background: #ffffff; border: 1px solid #e4dfd5; border-radius: 10px; font-size: 13px; color: #3d4a44;">
   <div style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -902,7 +911,7 @@ h1, h2, h3, .section-title, .hero-stallion {
       }
     }
 function navigate(pageId) {
-        const normalized = (pageId === "contact" || pageId === "about" || pageId === "submit-listing") ? "submit" : pageId;
+        const normalized = (pageId === "contact" || pageId === "submit-listing") ? "submit" : pageId;
   document.querySelectorAll(".page").forEach(p => {
     p.classList.remove("active");
     p.style.display = "none";
