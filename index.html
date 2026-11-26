@@ -918,7 +918,7 @@ function navigate(pageId) {
   });
   toggleMenu(false);
   window.scrollTo({ top: 0, behavior: "smooth" });
-  
+}
     
     
     function renderDirectory() {
@@ -952,8 +952,7 @@ function navigate(pageId) {
       `).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
     }
 
-          function renderLeaderboard() {
-    const tbody = document.getElementById("leaderboardBody");
+          
       function renderLeaderboard() {
     const tbody = document.getElementById("leaderboardBody");
     if (!tbody || typeof stallions === "undefined") return;
