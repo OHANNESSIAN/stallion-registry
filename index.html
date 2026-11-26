@@ -1027,48 +1027,84 @@ function navigate(pageId) {
       e.target.reset();
     }
 
-    renderDirectory();
-    renderLeaderboard();
-    renderFarms();
-    document.addEventListener("click", function(e) {
-  const el = e.target.closest("a, button, .nav-btn");
-  if (!el) return;
+      try { renderDirectory(); } catch (e) {}
+  try { renderLeaderboard(); } catch (e) {}
+  try { renderFarms(); } catch (e) {}
 
-  const raw = (
-    el.dataset.page ||
-    el.getAttribute("href") ||
-    el.textContent ||
-    ""
-  ).toLowerCase().trim();
+  function srShowPage(pageName) {
+    const clean = String(pageName || "home").replace(/^#/, "").replace(/^page-/, "").toLowerCase().trim();
+    const map = {
+      contact: "submit",
+      about: "submit",
+      listing: "submit",
+      listings: "submit",
+      "submit-listing": "submit",
+      "stallion-directory": "directory",
+      stallions: "directory",
+      "sire-leaderboard": "leaderboard",
+      leaderboard: "leaderboard",
+      "stud-farms": "farms",
+      "stud-farm": "farms",
+      farms: "farms"
+    };
+    const targetKey = map[clean] || clean || "home";
 
-  let targetPage = null;
-  if (raw.includes("directory") || raw.includes("stallion")) targetPage = "directory";
-  else if (raw.includes("leader")) targetPage = "leaderboard";
-  else if (raw.includes("farm") || raw.includes("stud")) targetPage = "farms";
-  else if (raw.includes("submit") || raw.includes("contact") || raw.includes("about") || raw.includes("list")) targetPage = "submit";
-  else if (raw === "home" || raw === "#home" || raw === "#page-home") targetPage = "home";
+    const allPages = document.querySelectorAll(".page, section[id^='page-'], [data-page-section]");
+    allPages.forEach(el => {
+      el.classList.remove("active");
+      el.style.setProperty("display", "none", "important");
+    });
 
-  if (targetPage && !raw.startsWith("mailto:") && !raw.startsWith("http")) {
-    e.preventDefault();
-    if (typeof navigate === "function") {
-      navigate(targetPage);
-    } else {
-      document.querySelectorAll(".page").forEach(p => {
-        p.classList.remove("active");
-        p.style.display = "none";
-      });
-      const sec = document.getElementById("page-" + targetPage);
-      if (sec) {
-        sec.classList.add("active");
-        sec.style.display = "block";
-      }
-      const drawer = document.getElementById("drawer");
-      const backdrop = document.getElementById("backdrop");
-      if (drawer) drawer.classList.remove("open");
-      if (backdrop) backdrop.classList.remove("open");
+    let target =
+      document.getElementById("page-" + targetKey) ||
+      document.getElementById(targetKey) ||
+      document.querySelector("[data-page-section='" + targetKey + "']") ||
+      document.getElementById("page-home");
+
+    if (target) {
+      target.classList.add("active");
+      target.style.setProperty("display", "block", "important");
+      target.style.setProperty("visibility", "visible", "important");
+      target.style.setProperty("opacity", "1", "important");
     }
+
+    const drawer = document.getElementById("drawer") || document.querySelector("nav.drawer");
+    const backdrop = document.getElementById("backdrop") || document.querySelector(".backdrop");
+    if (drawer) drawer.classList.remove("open");
+    if (backdrop) backdrop.classList.remove("open");
+    window.scrollTo(0, 0);
   }
-}, true);
+
+  window.navigate = srShowPage;
+  srShowPage("home");
+
+  document.addEventListener("click", function(e) {
+    const el = e.target.closest("a, button, .nav-btn, [role='button']");
+    if (!el) return;
+
+    const raw = (
+      el.getAttribute("data-page") ||
+      el.getAttribute("onclick") ||
+      el.getAttribute("href") ||
+      el.textContent ||
+      ""
+    ).toLowerCase().trim();
+
+    if (raw.startsWith("mailto:") || raw.includes("info@stallionregistry.com")) return;
+
+    let dest = null;
+    if (raw.includes("directory") || raw.includes("stallion")) dest = "directory";
+    else if (raw.includes("leader")) dest = "leaderboard";
+    else if (raw.includes("farm") || raw.includes("stud")) dest = "farms";
+    else if (raw.includes("submit") || raw.includes("contact") || raw.includes("about") || raw.includes("list")) dest = "submit";
+    else if (raw === "home" || raw === "#" || raw === "#home" || raw === "#page-home") dest = "home";
+
+    if (dest) {
+      e.preventDefault();
+      e.stopPropagation();
+      srShowPage(dest);
+    }
+  }, true);
     
   </script>
 </body>
