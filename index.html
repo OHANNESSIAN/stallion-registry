@@ -937,19 +937,18 @@ function navigate(pageId) {
       });
 
       grid.innerHTML = filtered.map(s => `
-        <div class="card">
-          <div class="card-top">
-            <span class="card-title">${s.name}</span>
-            <span class="badge">${s.region}</span>
-          </div>
-          <p class="meta">${s.line}</p>
-          <div class="stat-line">
-                           <div class="stat-line">
-              <span>Line: <strong>${s.bt || "Active"}</strong></span>
-              <span>Status: <strong>${s.earningsText || "2026 Roster"}</strong></span>
-            </div>
-    
-      `).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
+  <div class="card">
+    <div class="card-top">
+      <span class="card-title">${s.name}</span>
+      <span class="badge">${s.region}</span>
+    </div>
+    <p class="meta">${s.line}</p>
+    <div class="stat-line">
+      <span>Line: <strong>${s.bt || "Active"}</strong></span>
+      <span>Status: <strong>${s.earningsText || "2026 Roster"}</strong></span>
+    </div>
+  </div>
+`).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
     }
 
           
