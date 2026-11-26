@@ -1030,6 +1030,46 @@ function navigate(pageId) {
     renderDirectory();
     renderLeaderboard();
     renderFarms();
+    document.addEventListener("click", function(e) {
+  const el = e.target.closest("a, button, .nav-btn");
+  if (!el) return;
+
+  const raw = (
+    el.dataset.page ||
+    el.getAttribute("href") ||
+    el.textContent ||
+    ""
+  ).toLowerCase().trim();
+
+  let targetPage = null;
+  if (raw.includes("directory") || raw.includes("stallion")) targetPage = "directory";
+  else if (raw.includes("leader")) targetPage = "leaderboard";
+  else if (raw.includes("farm") || raw.includes("stud")) targetPage = "farms";
+  else if (raw.includes("submit") || raw.includes("contact") || raw.includes("about") || raw.includes("list")) targetPage = "submit";
+  else if (raw === "home" || raw === "#home" || raw === "#page-home") targetPage = "home";
+
+  if (targetPage && !raw.startsWith("mailto:") && !raw.startsWith("http")) {
+    e.preventDefault();
+    if (typeof navigate === "function") {
+      navigate(targetPage);
+    } else {
+      document.querySelectorAll(".page").forEach(p => {
+        p.classList.remove("active");
+        p.style.display = "none";
+      });
+      const sec = document.getElementById("page-" + targetPage);
+      if (sec) {
+        sec.classList.add("active");
+        sec.style.display = "block";
+      }
+      const drawer = document.getElementById("drawer");
+      const backdrop = document.getElementById("backdrop");
+      if (drawer) drawer.classList.remove("open");
+      if (backdrop) backdrop.classList.remove("open");
+    }
+  }
+}, true);
+    
   </script>
 </body>
 </html>
