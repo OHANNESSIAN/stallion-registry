@@ -903,7 +903,7 @@ h1, h2, h3, .section-title, .hero-stallion {
       }
     }
 function navigate(pageId) {
-      const normalized = (pageId === "contact" || pageId === "about" || pageId === "submit-listing") ? "submit" : pageId;
+        const normalized = (pageId === "contact" || pageId === "about" || pageId === "submit-listing") ? "submit" : pageId;
   document.querySelectorAll(".page").forEach(p => {
     p.classList.remove("active");
     p.style.display = "none";
@@ -918,8 +918,7 @@ function navigate(pageId) {
   });
   toggleMenu(false);
   window.scrollTo({ top: 0, behavior: "smooth" });
-}
-    
+  
     
     
     function renderDirectory() {
@@ -945,16 +944,17 @@ function navigate(pageId) {
           </div>
           <p class="meta">${s.line}</p>
           <div class="stat-line">
-                      <span>Line: </span>
-                      <span><strong>${s.bt}</strong></span>
-                      <span> · Record: </span>
-<span>${s.earningsText}</span>
-          </div>
-        </div>
+                           <div class="stat-line">
+              <span>Line: <strong>${s.bt || "Active"}</strong></span>
+              <span>Status: <strong>${s.earningsText || "2026 Roster"}</strong></span>
+            </div>
+    
       `).join("") || `<div class="card"><p class="meta">No matching stallions found.</p></div>`;
     }
 
           function renderLeaderboard() {
+    const tbody = document.getElementById("leaderboardBody");
+      function renderLeaderboard() {
     const tbody = document.getElementById("leaderboardBody");
     if (!tbody || typeof stallions === "undefined") return;
     tbody.innerHTML = stallions.map((s, idx) => `
@@ -966,9 +966,7 @@ function navigate(pageId) {
         <td>${s.earningsText || s.bt || "2026 Roster"}</td>
       </tr>
     `).join("");
-          }
-    
-
+  }
 
     function renderFarms() {
       const q = (document.getElementById("farmSearchInput").value || "").toLowerCase().trim();
