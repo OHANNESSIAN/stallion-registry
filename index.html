@@ -487,8 +487,9 @@ h1, h2, h3, .section-title, .hero-stallion {
 
 .table-wrap { display: block; max-width: 100%; overflow-x: hidden; }
 .table-wrap table { width: 100%; min-width: 0; border-collapse: collapse; table-layout: auto; }
-.table-wrap th, .table-wrap td { white-space: normal; font-size: 12px; padding: 8px 6px; word-break: break-word; }
-      
+.table-wrap th, .table-wrap td { white-space: normal; font-size: 12px; padding: 8px 6px; word-break: normal; overflow-wrap: normal; }
+.table-wrap th:nth-child(3), .table-wrap td:nth-child(3) { display: none; }
+.table-wrap th:nth-child(1), .table-wrap td:nth-child(1), .table-wrap td:nth-child(5) { white-space: nowrap; }
       
   </style>
      <script type="application/ld+json">
@@ -530,7 +531,7 @@ h1, h2, h3, .section-title, .hero-stallion {
     <button class="nav-btn" data-page="directory" onclick="navigate('directory')">Stallion Directory</button>
     <button class="nav-btn" data-page="leaderboard" onclick="navigate('leaderboard')">Leaderboard</button>
     <button class="nav-btn" data-page="farms" onclick="navigate('farms')">Stud Farms</button>
-    <button class="nav-btn" data-page="submit" onclick="navigate('submit')">Submit Listing &amp; About</button><button class="nav-btn" data-page="about" onclick="navigate('about')">About</button>
+   <button class="nav-btn" data-page="submit" onclick="navigate('submit')">Submit Listing &amp; About</button>   
   </nav>
   <main>
     <!-- HOME -->
