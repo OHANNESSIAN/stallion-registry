@@ -904,6 +904,7 @@ h1, h2, h3, .section-title, .hero-stallion {
     }
 function navigate(pageId) {
   const normalized = (pageId === "contact" || pageId === "about") ? "submit" : pageId;
+    const normalized = (pageId === "contact" || pageId === "about" || pageId === "submit-listing") ? "submit" : pageId;
   document.querySelectorAll(".page").forEach(p => {
     p.classList.remove("active");
     p.style.display = "none";
@@ -913,6 +914,7 @@ function navigate(pageId) {
     target.classList.add("active");
     target.style.display = "block";
   }
+  
 
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.page === normalized);
@@ -1023,10 +1025,13 @@ function navigate(pageId) {
       
       const notice = document.getElementById("submitNotice");
       notice.textContent = `Added "${name}" to the live session directory and leaderboard.`;
-      notice.classList.add("show");
-      e.target.reset();
-      }
-</script>
+        }
+  renderDirectory();
+  renderLeaderboard();
+  </script>
+</body>
+</html>
+          
         </body>
           
 </html>
