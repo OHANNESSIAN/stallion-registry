@@ -1026,8 +1026,7 @@ function navigate(pageId) {
       notice.classList.add("show");
       e.target.reset();
       }
-</script>
-<script>
+</script><script>
 function srOpen(name) {
   var id = String(name || "home").replace(/^#/, "").replace(/^page-/, "").toLowerCase().trim();
   if (id === "contact" || id === "about" || id === "listing" || id === "listings" || id === "submit-listing") id = "submit";
@@ -1035,35 +1034,62 @@ function srOpen(name) {
   if (id === "sire-leaderboard") id = "leaderboard";
   if (id === "stud-farms" || id === "stud-farm") id = "farms";
 
-  var allIds = ["page-home", "home", "page-directory", "directory", "page-stallions", "page-leaderboard", "leaderboard", "page-sires", "page-farms", "farms", "page-farm", "page-submit", "submit", "page-about", "about", "page-contact", "contact", "page-listing"];
-  var pageEls = document.querySelectorAll(".page");
-  for (var p = 0; p < pageEls.length; p++) {
-    pageEls[p].classList.remove("active");
-    pageEls[p].style.setProperty("display", "none", "important");
+  var mains = document.querySelectorAll("main, #app, #content, .main-content");
+  for (var m = 0; m < mains.length; m++) {
+    mains[m].style.setProperty("display", "block", "important");
   }
-  for (var i = 0; i < allIds.length; i++) {
-    var node = document.getElementById(allIds[i]);
-    if (node) {
-      node.classList.remove("active");
-      node.style.setProperty("display", "none", "important");
+
+  var rawSections = document.querySelectorAll("main > section, main > div, .page, section[id], div[id^='page-']");
+  var sections = [];
+  for (var i = 0; i < rawSections.length; i++) {
+    var s = rawSections[i];
+    if (s.tagName === "HEADER" || s.tagName === "FOOTER" || s.tagName === "NAV") continue;
+    if (s.id === "drawer" || s.id === "backdrop") continue;
+    sections.push(s);
+  }
+
+  var target = null;
+  for (var j = 0; j < sections.length; j++) {
+    var sec = sections[j];
+    var sid = (sec.id || "").toLowerCase();
+    var h = sec.querySelector("h1, h2, h3");
+    var htxt = (h ? h.textContent : "").toLowerCase();
+    var hay = sid + " " + htxt;
+
+    if (id === "home" && (sid.indexOf("home") !== -1 || htxt.indexOf("thoroughbred") !== -1 || htxt.indexOf("stallion registry") !== -1 || j === 0)) {
+      target = sec;
+      break;
+    }
+    if (id === "directory" && (hay.indexOf("directory") !== -1 || hay.indexOf("stallions") !== -1)) {
+      target = sec;
+      break;
+    }
+    if (id === "leaderboard" && (hay.indexOf("leader") !== -1 || hay.indexOf("standing") !== -1 || hay.indexOf("sire") !== -1)) {
+      target = sec;
+      break;
+    }
+    if (id === "farms" && (hay.indexOf("farm") !== -1 || hay.indexOf("stud") !== -1)) {
+      target = sec;
+      break;
+    }
+    if (id === "submit" && (hay.indexOf("submit") !== -1 || hay.indexOf("listing") !== -1 || hay.indexOf("contact") !== -1 || hay.indexOf("about") !== -1)) {
+      target = sec;
+      break;
     }
   }
 
-  var candidates = ["page-" + id, id];
-  if (id === "submit") candidates.push("page-about", "page-contact", "page-listing", "about", "contact", "submit");
-  if (id === "farms") candidates.push("page-farm", "farms");
-  if (id === "directory") candidates.push("page-stallions", "directory");
-  if (id === "leaderboard") candidates.push("page-sires", "leaderboard");
+  if (!target && sections.length > 0) target = sections[0];
 
-  var el = null;
-  for (var c = 0; c < candidates.length; c++) {
-    el = document.getElementById(candidates[c]);
-    if (el) break;
-  }
-
-  if (el) {
-    el.classList.add("active");
-    el.style.setProperty("display", "block", "important");
+  for (var k = 0; k < sections.length; k++) {
+    if (sections[k] === target) {
+      sections[k].classList.add("active");
+      sections[k].style.setProperty("display", "block", "important");
+      sections[k].style.setProperty("visibility", "visible", "important");
+      sections[k].style.setProperty("opacity", "1", "important");
+    } else {
+      sections[k].classList.remove("active");
+      sections[k].style.setProperty("display", "none", "important");
+    }
   }
 
   var d = document.getElementById("drawer");
@@ -1072,6 +1098,7 @@ function srOpen(name) {
   if (b) b.classList.remove("open");
   window.scrollTo(0, 0);
 }
+
 window.navigate = srOpen;
 window.showPage = srOpen;
 window.openPage = srOpen;
@@ -1086,7 +1113,7 @@ document.addEventListener("click", function(e) {
       var txt = attr + " " + lbl;
       if (txt.indexOf("mailto:") !== -1 || txt.indexOf("info@stallionregistry.com") !== -1) return;
       var dest = null;
-      if (txt.indexOf("directory") !== -1 || txt.indexOf("stallion") !== -1) dest = "directory";
+      if (txt.indexOf("directory") !== -1 || lbl === "stallions") dest = "directory";
       else if (txt.indexOf("leader") !== -1) dest = "leaderboard";
       else if (txt.indexOf("farm") !== -1 || txt.indexOf("stud") !== -1) dest = "farms";
       else if (txt.indexOf("submit") !== -1 || txt.indexOf("contact") !== -1 || txt.indexOf("about") !== -1 || txt.indexOf("list") !== -1) dest = "submit";
@@ -1103,6 +1130,7 @@ document.addEventListener("click", function(e) {
   }
 }, true);
 </script>
+          
 </body>
 </html>
           
