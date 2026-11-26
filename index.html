@@ -1025,7 +1025,9 @@ function navigate(pageId) {
       notice.textContent = `Added "${name}" to the live session directory and leaderboard.`;
       notice.classList.add("show");
       e.target.reset();
-    }
+      }
+</script>
+<script>
 function srOpen(name) {
   var id = String(name || "home").replace(/^#/, "").replace(/^page-/, "").toLowerCase().trim();
   if (id === "contact" || id === "about" || id === "listing" || id === "listings" || id === "submit-listing") id = "submit";
@@ -1099,7 +1101,8 @@ document.addEventListener("click", function(e) {
     }
     t = t.parentNode;
   }
-}, true);          
-  </script>
+}, true);
+</script>
 </body>
 </html>
+          
