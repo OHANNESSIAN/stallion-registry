@@ -1083,16 +1083,14 @@ function srOpen(name) {
 
   if (!target && sections.length > 0) target = sections[0];
 
-  for (var k = 0; k < sections.length; k++) {
+    for (var k = 0; k < sections.length; k++) {
     if (sections[k] === target) {
       sections[k].classList.add("active");
-      sections[k].style.setProperty("display", "block", "important");
-      sections[k].style.setProperty("visibility", "visible", "important");
-      sections[k].style.setProperty("opacity", "1", "important");
     } else {
       sections[k].classList.remove("active");
-      sections[k].style.setProperty("display", "none", "important");
     }
+    
+  
   }
 
   var d = document.getElementById("drawer");
