@@ -1027,84 +1027,69 @@ function navigate(pageId) {
       e.target.reset();
     }
 
-      try { renderDirectory(); } catch (e) {}
-  try { renderLeaderboard(); } catch (e) {}
-  try { renderFarms(); } catch (e) {}
+     function srOpen(name) {
+  var id = String(name || "home").replace(/^#/, "").replace(/^page-/, "").toLowerCase();
+  if (id === "contact" || id === "about" || id === "listing" || id === "listings" || id === "submit-listing") id = "submit";
+  if (id === "stallion-directory" || id === "stallions") id = "directory";
+  if (id === "sire-leaderboard") id = "leaderboard";
+  if (id === "stud-farms" || id === "stud-farm") id = "farms";
 
-  function srShowPage(pageName) {
-    const clean = String(pageName || "home").replace(/^#/, "").replace(/^page-/, "").toLowerCase().trim();
-    const map = {
-      contact: "submit",
-      about: "submit",
-      listing: "submit",
-      listings: "submit",
-      "submit-listing": "submit",
-      "stallion-directory": "directory",
-      stallions: "directory",
-      "sire-leaderboard": "leaderboard",
-      leaderboard: "leaderboard",
-      "stud-farms": "farms",
-      "stud-farm": "farms",
-      farms: "farms"
-    };
-    const targetKey = map[clean] || clean || "home";
-
-    const allPages = document.querySelectorAll(".page, section[id^='page-'], [data-page-section]");
-    allPages.forEach(el => {
-      el.classList.remove("active");
-      el.style.setProperty("display", "none", "important");
-    });
-
-    let target =
-      document.getElementById("page-" + targetKey) ||
-      document.getElementById(targetKey) ||
-      document.querySelector("[data-page-section='" + targetKey + "']") ||
-      document.getElementById("page-home");
-
-    if (target) {
-      target.classList.add("active");
-      target.style.setProperty("display", "block", "important");
-      target.style.setProperty("visibility", "visible", "important");
-      target.style.setProperty("opacity", "1", "important");
+  var pages = document.querySelectorAll(".page, section, main > div");
+  for (var i = 0; i < pages.length; i++) {
+    if (pages[i].id && pages[i].id.indexOf("page-") === 0) {
+      pages[i].classList.remove("active");
+      pages[i].style.setProperty("display", "none", "important");
     }
-
-    const drawer = document.getElementById("drawer") || document.querySelector("nav.drawer");
-    const backdrop = document.getElementById("backdrop") || document.querySelector(".backdrop");
-    if (drawer) drawer.classList.remove("open");
-    if (backdrop) backdrop.classList.remove("open");
-    window.scrollTo(0, 0);
   }
 
-  window.navigate = srShowPage;
-  srShowPage("home");
+  var candidates = ["page-" + id, id];
+  if (id === "submit") candidates.push("page-about", "page-contact", "page-listing", "about", "contact", "submit");
+  if (id === "farms") candidates.push("page-farm", "farms");
+  if (id === "directory") candidates.push("page-stallions", "directory");
+  if (id === "leaderboard") candidates.push("page-sires", "leaderboard");
 
-  document.addEventListener("click", function(e) {
-    const el = e.target.closest("a, button, .nav-btn, [role='button']");
-    if (!el) return;
+  var el = null;
+  for (var c = 0; c < candidates.length; c++) {
+    el = document.getElementById(candidates[c]);
+    if (el) break;
+  }
 
-    const raw = (
-      el.getAttribute("data-page") ||
-      el.getAttribute("onclick") ||
-      el.getAttribute("href") ||
-      el.textContent ||
-      ""
-    ).toLowerCase().trim();
+  if (el) {
+    el.classList.add("active");
+    el.style.setProperty("display", "block", "important");
+  }
 
-    if (raw.startsWith("mailto:") || raw.includes("info@stallionregistry.com")) return;
-
-    let dest = null;
-    if (raw.includes("directory") || raw.includes("stallion")) dest = "directory";
-    else if (raw.includes("leader")) dest = "leaderboard";
-    else if (raw.includes("farm") || raw.includes("stud")) dest = "farms";
-    else if (raw.includes("submit") || raw.includes("contact") || raw.includes("about") || raw.includes("list")) dest = "submit";
-    else if (raw === "home" || raw === "#" || raw === "#home" || raw === "#page-home") dest = "home";
-
-    if (dest) {
-      e.preventDefault();
-      e.stopPropagation();
-      srShowPage(dest);
+  var d = document.getElementById("drawer");
+  var b = document.getElementById("backdrop");
+  if (d) d.classList.remove("open");
+  if (b) b.classList.remove("open");
+}
+window.navigate = srOpen;
+srOpen("home");
+document.addEventListener("click", function(e) {
+  var t = e.target;
+  while (t && t !== document) {
+    if (t.tagName === "A" || t.tagName === "BUTTON" || (t.className && String(t.className).indexOf("nav-btn") !== -1)) {
+      var attr = ((t.getAttribute("data-page") || "") + " " + (t.getAttribute("href") || "") + " " + (t.getAttribute("onclick") || "")).toLowerCase();
+      var lbl = String(t.textContent || "").toLowerCase();
+      var txt = attr + " " + lbl;
+      if (txt.indexOf("mailto:") !== -1 || txt.indexOf("info@stallionregistry.com") !== -1) return;
+      var dest = null;
+      if (txt.indexOf("directory") !== -1 || txt.indexOf("stallion") !== -1) dest = "directory";
+      else if (txt.indexOf("leader") !== -1) dest = "leaderboard";
+      else if (txt.indexOf("farm") !== -1 || txt.indexOf("stud") !== -1) dest = "farms";
+      else if (txt.indexOf("submit") !== -1 || txt.indexOf("contact") !== -1 || txt.indexOf("about") !== -1 || txt.indexOf("list") !== -1) dest = "submit";
+      else if (lbl.indexOf("home") !== -1 || attr.indexOf("home") !== -1) dest = "home";
+      if (dest) {
+        e.preventDefault();
+        srOpen(dest);
+        return;
+      }
     }
-  }, true);
+    t = t.parentNode;
+  }
+}, true);
+  
     
   </script>
 </body>
